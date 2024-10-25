@@ -1,14 +1,14 @@
 import { test, expect, type Page } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('https://material.playwrightvn.com/');
+  await page.goto('https://demo.playwright.dev/todomvc');
 });
 
 const TODO_ITEMS = [
   'buy some cheese',
   'feed the cat',
   'book a doctors appointment'
-];
+] as const;
 
 test.describe('New Todo', () => {
   test('should allow me to add todo items', async ({ page }) => {
@@ -355,8 +355,9 @@ test.describe('Routing', () => {
 
     await checkNumberOfCompletedTodosInLocalStorage(page, 1);
 
-    await test.step('Step name', async () => {
-      // Code here
+    await test.step('Showing all items', async () => {
+      await page.getByRole('link', { name: 'All' }).click();
+      await expect(todoItem).toHaveCount(3);
     });
 
     await test.step('Showing active items', async () => {

@@ -16,7 +16,7 @@ config();
 export default defineConfig({
   expect: {
 
-  },
+  },  
   /* Run tests in files in parallel */
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
