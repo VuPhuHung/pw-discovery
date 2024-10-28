@@ -63,4 +63,59 @@ function isPrime(number){
 
 console.log(isPrime(7));
 console.log(isPrime(100));
+
 // Playwright
+import {test, expect} from '@playwright/test';
+
+test('Daily-Challenges-17-09-2024', async ({page}) => {
+    await test.step('Go to https://material.playwrightvn.com/', async () => {
+        await page.goto('https://material.playwrightvn.com/');
+    });
+
+    await test.step('Click: Product page', async () => {
+        await page.locator('//a[@href="02-xpath-product-page.html"]').click();
+    });
+
+    await test.step('Add product 1 to cart', async () => {
+        await page.locator('//button[@data-product-id="1"]').click({clickCount: 2});
+    });
+
+    await test.step('Add product 2 to cart', async () => {
+        await page.locator('//button[@data-product-id="2"]').click({clickCount: 2});
+    });
+
+    await test.step('Add product 3 to cart', async () => {  
+        await page.locator('//button[@data-product-id="3"]').click({clickCount: 3});
+    });
+
+    await test.step('Check number of product 1', async () => {
+        const numberOfProduct1 = await page.locator('//*[@id="cart-items"]/tr[1]/td[3]').textContent();
+        expect(numberOfProduct1).toBe("2");
+    });
+
+    await test.step('Check number of product 2', async () => {
+        const numberOfProduct2 = await page.locator('//*[@id="cart-items"]/tr[2]/td[3]').textContent();
+        expect(numberOfProduct2).toBe("2");
+    });
+
+    await test.step('Check number of product 3', async () => {
+        const numberOfProduct3 = await page.locator('//*[@id="cart-items"]/tr[3]/td[3]').textContent();
+        expect(numberOfProduct3).toBe("3");
+    });
+
+    await test.step('Check total price', async () => {
+       const totalPrice = await page.locator('//*[@class="total-price"]').textContent();
+       const numberOfProduct1 = parseInt(await page.locator('//*[@id="cart-items"]/tr[1]/td[3]').textContent() || '0');
+       const numberOfProduct2 = parseInt(await page.locator('//*[@id="cart-items"]/tr[2]/td[3]').textContent() || '0');
+       const numberOfProduct3 = parseInt(await page.locator('//*[@id="cart-items"]/tr[3]/td[3]').textContent() || '0');
+
+       const priceOfProduct1 = 10.00;
+       const priceOfProduct2 = 20.00;
+       const priceOfProduct3 = 30.00;
+
+       const expectedTotalPrice = (numberOfProduct1 * priceOfProduct1) + (numberOfProduct2 * priceOfProduct2) + (numberOfProduct3 * priceOfProduct3);
+
+       expect(totalPrice).toBe("$"+`${expectedTotalPrice}.00`);
+    });
+
+});
